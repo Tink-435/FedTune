@@ -1,0 +1,50 @@
+# Fair tuning protocol (Design 2.3.4) + final grid, in one file.
+#
+#   fedtune tune -c configs/tune.yaml            # 4 strategies x 6 trials on tuning seed 1000
+#   fedtune grid -c tunes/agnews/tuned.yaml      # 3 alpha x 3 dropout x 3 seeds x 4 strategies (108 runs)
+#   (or both at once: fedtune tune -c configs/tune.yaml --grid; shard the grid with --shard i/n)
+#
+# Every strategy gets the same budget (tune.trials) on the same partition and participation schedule
+# (tune.seed, tune.alpha, tune.dropout_rate). Trials are scored on the coordinator's global validation
+# set V_g (mean of the last 3 rounds); the test set is never evaluated while tuning. Winners are frozen
+# per strategy in strategy_overrides inside tunes/agnews/tuned.yaml, which the grid then uses.
+# Size: scaled down from reference.yaml so 24 tuning runs + 108 grid runs are an overnight job when
+# sharded across machines - time one run on your hardware first.
+experiment: {name: agnews, rounds: 15, num_clients: 10, checkpoint_every: 5,
+             strategy: [fedavg, diversity, clustered, hybrid]}
+data:
+  dataset: ag_news
+  text_fields: [text]
+  max_examples: 8000
+  max_length: 96
+  global_val_frac: 0.05
+  partition: {mode: dirichlet, alpha: 0.5, min_size: 40}
+model: {base: distilbert-base-uncased, lora: {rank: 8, alpha: 16, target_modules: [q_lin, v_lin]}}
+train: {local_epochs: 1, lr: 2.0e-4, batch_size: 16}
+dropout: {rate: 0.2, min_participants: 3}
+aggregation:
+  lora_method: adapter_average
+  clustered: {tau_mode: quantile, tau_quantile: 0.25, rule: equal, warmup_rounds: 1}
+tune:
+  seed: 1000                     # separate from grid.seeds (checked)
+  trials: 6
+  alpha: 0.5                     # middle of the grid's skew range
+  dropout_rate: 0.2
+  select_metric: accuracy
+  select_last: 3
+  space:
+    fedavg:    {train.lr: [5.0e-5, 1.0e-4, 2.0e-4, 5.0e-4, 1.0e-3, 2.0e-3]}
+    diversity: {train.lr: [1.0e-4, 2.0e-4, 5.0e-4, 1.0e-3],
+                aggregation.diversity.lam: [0.25, 0.5, 0.75],
+                aggregation.diversity.kappa: [0.25, 0.5, 0.75]}
+    clustered: {train.lr: [1.0e-4, 2.0e-4, 5.0e-4, 1.0e-3],
+                aggregation.clustered.tau_quantile: [0.15, 0.25, 0.4],
+                aggregation.clustered.rule: [equal, sqrt]}
+    hybrid:    {train.lr: [1.0e-4, 2.0e-4, 5.0e-4, 1.0e-3],
+                aggregation.clustered.tau_quantile: [0.15, 0.25, 0.4],
+                aggregation.diversity.lam: [0.25, 0.5, 0.75],
+                aggregation.hybrid.rho: [0.25, 0.5]}
+grid:
+  alpha: [0.1, 0.5, 5.0]         # smaller = more skewed
+  dropout_rate: [0.0, 0.2, 0.5]
+  seeds: [1, 2, 3]

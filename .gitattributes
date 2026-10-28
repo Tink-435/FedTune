@@ -1,0 +1,6 @@
+# Same line endings on every OS (the code fingerprint hashes file bytes).
+* text=auto eol=lf
+# Datasets are stored exactly as published: never normalise or diff them.
+data/** -text -diff
+*.parquet binary
+*.zip binary

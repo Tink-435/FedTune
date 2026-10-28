@@ -1,0 +1,13 @@
+# Domain (genre) skew on MNLI sentence pairs (FR 5b): each client has a home genre
+# (fiction, government, slate, telephone, travel, ...); eta = 1/(1+alpha) of its shard comes from it.
+experiment: {name: mnli, seed: 1, rounds: 20, num_clients: 10, strategy: [fedavg, diversity, clustered, hybrid]}
+data:
+  dataset: mnli
+  text_fields: [premise, hypothesis]
+  max_examples: 30000
+  max_length: 128
+  partition: {mode: domain, alpha: 0.2, min_size: 50}
+model: {base: distilbert-base-uncased, lora: {rank: 8, alpha: 16, target_modules: [q_lin, v_lin]}}
+train: {lr: 2.0e-4, batch_size: 16}
+dropout: {rate: 0.2, min_participants: 3}
+aggregation: {clustered: {tau_mode: quantile, tau_quantile: 0.25, rule: equal}}

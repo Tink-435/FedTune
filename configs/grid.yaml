@@ -1,0 +1,24 @@
+# UNTUNED heterogeneity x dropout grid (FR 26, UC6) with pretrained DistilBERT: 3 alpha x 3 dropout x
+# 3 seeds x 4 strategies = 108 runs, every strategy at the shared default hyperparameters.
+# For the final, fairly tuned comparison use configs/tune.yaml (tunes, then writes tunes/agnews/tuned.yaml).
+# Shard across machines:  fedtune grid -c configs/grid.yaml --shard 0/3   (1/3, 2/3 on the others)
+# Outputs: grids/grid/grid_summary.csv (mean +- std) and paired_vs_fedavg.csv (paired CIs).
+# Offline pipeline check of the grid code instead: configs/smoke.yaml with --set grid.alpha=[0.1,5.0] ...
+experiment: {name: grid, rounds: 15, num_clients: 10, checkpoint_every: 5,
+             strategy: [fedavg, diversity, clustered, hybrid]}
+data:
+  dataset: ag_news              # or mnli (mode: domain, genre skew) / xnli (mode: language)
+  text_fields: [text]
+  max_examples: 8000
+  max_length: 96
+  global_val_frac: 0.05
+  partition: {mode: dirichlet, min_size: 40}
+model: {base: distilbert-base-uncased, lora: {rank: 8, alpha: 16, target_modules: [q_lin, v_lin]}}
+train: {local_epochs: 1, lr: 2.0e-4, batch_size: 16}
+dropout: {min_participants: 3}
+aggregation:
+  clustered: {tau_mode: quantile, tau_quantile: 0.25, rule: equal}
+grid:
+  alpha: [0.1, 0.5, 5.0]        # smaller = more skewed (mapped to alpha / eta / beta by partition mode)
+  dropout_rate: [0.0, 0.2, 0.5]
+  seeds: [1, 2, 3]

@@ -1,0 +1,13 @@
+# Language skew on XNLI sentence pairs (FR 5b): each client has a home language; eta = 1/(1+alpha).
+experiment: {name: xnli, seed: 1, rounds: 20, num_clients: 6, strategy: [fedavg, clustered, hybrid]}
+data:
+  dataset: xnli
+  text_fields: [premise, hypothesis]
+  languages: [en, fr, es, de, hi, zh]
+  max_examples: 12000
+  max_length: 128
+  partition: {mode: language, alpha: 0.2}
+model: {base: distilbert-base-multilingual-cased, lora: {rank: 8, alpha: 16}}
+train: {lr: 2.0e-4, batch_size: 16}
+dropout: {rate: 0.2, min_participants: 3}
+aggregation: {lora_method: product, clustered: {tau_mode: quantile, tau_quantile: 0.25, rule: equal}}

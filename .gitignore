@@ -1,0 +1,19 @@
+runs/
+grids/
+exports/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+
+# Large datasets are not tracked (MNLI train.parquet is 214 MB, above GitHub's 100 MB file limit)
+data/mnli/
+data/xnli/
+
+# Working folders of the multi-machine runs
+tuning_in/
+merged/
+tunes/
+*.zip
+
+# macOS
+.DS_Store

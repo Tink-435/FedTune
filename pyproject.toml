@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fedtune"
+version = "1.1.0"
+description = "Single-machine simulation of federated LoRA fine-tuning under controlled heterogeneity and client dropout"
+requires-python = ">=3.10"
+dependencies = [
+  "torch>=2.2", "transformers>=4.40", "peft>=0.10", "safetensors", "numpy", "scipy",
+  "pyyaml", "pyarrow", "dash>=2.14", "plotly", "matplotlib",
+  "psutil; platform_system == 'Windows'",   # peak-memory reporting on Windows
+]
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+fedtune = "fedtune.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["fedtune*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,17 @@
+# Smoke demo (= smoke test): fully offline (bundled AG News subset, tiny random DistilBERT, hashing tokenizer).
+# Pipeline check only: the base model is random, so accuracy stays near chance (25%).
+# For real accuracy use configs/reference.yaml (pretrained DistilBERT). Compares all four strategies (UC5).
+experiment: {name: smoke, seed: 42, rounds: 8, num_clients: 6,
+             strategy: [fedavg, diversity, clustered, hybrid], checkpoint_every: 2}
+data:
+  dataset: ag_news
+  max_examples: 2000
+  max_length: 48
+  partition: {mode: dirichlet, alpha: 0.3, min_size: 20}
+model: {base: tiny-random, lora: {rank: 8, alpha: 16}}
+train: {local_epochs: 2, lr: 1.0e-2, batch_size: 32}
+dropout: {rate: 0.2, min_participants: 2}
+aggregation:
+  lora_method: adapter_average
+  diversity: {codebook_size: 16, embed_dim: 32}
+  clustered: {tau_mode: quantile, tau_quantile: 0.25, warmup_rounds: 1, rule: equal}

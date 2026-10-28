@@ -1,0 +1,20 @@
+# Reference experiment: pretrained DistilBERT on AG News, all four strategies on the same partition,
+# seed and participation schedule (UC5). AG News is bundled in data/ag_news; the model downloads once.
+# NFR 1 timing check (one strategy, <= 3 h on an Apple-M-class laptop):
+#   fedtune run -c configs/reference.yaml --set "experiment.strategy=[fedavg]"
+# For final, tuned numbers use configs/tune.yaml instead (tunes every strategy, then freezes them).
+experiment: {name: ref, seed: 42, rounds: 20, num_clients: 10,
+             strategy: [fedavg, diversity, clustered, hybrid], checkpoint_every: 5}
+data:
+  dataset: ag_news
+  text_fields: [text]
+  max_examples: 20000
+  max_length: 128
+  global_val_frac: 0.05          # coordinator-held validation set; test is evaluated once, at the end
+  partition: {mode: dirichlet, alpha: 0.3, min_size: 50}
+model: {base: distilbert-base-uncased, lora: {rank: 8, alpha: 16, target_modules: [q_lin, v_lin]}}
+train: {local_epochs: 1, lr: 2.0e-4, batch_size: 16}
+dropout: {rate: 0.2, min_participants: 3}
+aggregation:
+  lora_method: adapter_average
+  clustered: {tau_mode: quantile, tau_quantile: 0.25, rule: equal}
