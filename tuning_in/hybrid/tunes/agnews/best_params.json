@@ -1,0 +1,17 @@
+{
+  "tuning_seed": 1000,
+  "select": "mean val accuracy over last 3 rounds",
+  "best": {
+    "hybrid": {
+      "params": {
+        "aggregation.clustered.tau_quantile": 0.25,
+        "aggregation.diversity.lam": 0.75,
+        "aggregation.hybrid.rho": 0.5,
+        "train.lr": 0.0005
+      },
+      "score": 0.9039266666666667,
+      "trial": 2,
+      "run_id": "agnews-hybrid-a0.5-p0.2-s1000-0eb43c1c"
+    }
+  }
+}

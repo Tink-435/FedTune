@@ -1,0 +1,189 @@
+{
+  "mode": "dirichlet",
+  "alpha": 0.5,
+  "num_clients": 10,
+  "H": 0.11125909867312489,
+  "H_over": "label",
+  "attempts": 1,
+  "min_size_adjustments": 0,
+  "test_size": 800,
+  "reference_size": 160,
+  "global_val_size": 399,
+  "label_names": [
+    "World",
+    "Sports",
+    "Business",
+    "Sci/Tech"
+  ],
+  "clients": [
+    {
+      "client": 0,
+      "train_size": 1017,
+      "val_size": 113,
+      "label_hist": [
+        528,
+        130,
+        348,
+        11
+      ],
+      "attribute_hist": {
+        "Business": 348,
+        "Sci/Tech": 11,
+        "Sports": 130,
+        "World": 528
+      }
+    },
+    {
+      "client": 1,
+      "train_size": 491,
+      "val_size": 55,
+      "label_hist": [
+        3,
+        187,
+        213,
+        88
+      ],
+      "attribute_hist": {
+        "Business": 213,
+        "Sci/Tech": 88,
+        "Sports": 187,
+        "World": 3
+      }
+    },
+    {
+      "client": 2,
+      "train_size": 261,
+      "val_size": 29,
+      "label_hist": [
+        32,
+        55,
+        153,
+        21
+      ],
+      "attribute_hist": {
+        "Business": 153,
+        "Sci/Tech": 21,
+        "Sports": 55,
+        "World": 32
+      }
+    },
+    {
+      "client": 3,
+      "train_size": 970,
+      "val_size": 108,
+      "label_hist": [
+        78,
+        567,
+        147,
+        178
+      ],
+      "attribute_hist": {
+        "Business": 147,
+        "Sci/Tech": 178,
+        "Sports": 567,
+        "World": 78
+      }
+    },
+    {
+      "client": 4,
+      "train_size": 431,
+      "val_size": 48,
+      "label_hist": [
+        161,
+        82,
+        46,
+        142
+      ],
+      "attribute_hist": {
+        "Business": 46,
+        "Sci/Tech": 142,
+        "Sports": 82,
+        "World": 161
+      }
+    },
+    {
+      "client": 5,
+      "train_size": 478,
+      "val_size": 53,
+      "label_hist": [
+        76,
+        361,
+        39,
+        2
+      ],
+      "attribute_hist": {
+        "Business": 39,
+        "Sci/Tech": 2,
+        "Sports": 361,
+        "World": 76
+      }
+    },
+    {
+      "client": 6,
+      "train_size": 439,
+      "val_size": 49,
+      "label_hist": [
+        314,
+        10,
+        32,
+        83
+      ],
+      "attribute_hist": {
+        "Business": 32,
+        "Sci/Tech": 83,
+        "Sports": 10,
+        "World": 314
+      }
+    },
+    {
+      "client": 7,
+      "train_size": 1420,
+      "val_size": 158,
+      "label_hist": [
+        31,
+        2,
+        464,
+        923
+      ],
+      "attribute_hist": {
+        "Business": 464,
+        "Sci/Tech": 923,
+        "Sports": 2,
+        "World": 31
+      }
+    },
+    {
+      "client": 8,
+      "train_size": 36,
+      "val_size": 4,
+      "label_hist": [
+        2,
+        15,
+        19,
+        0
+      ],
+      "attribute_hist": {
+        "Business": 19,
+        "Sports": 15,
+        "World": 2
+      }
+    },
+    {
+      "client": 9,
+      "train_size": 433,
+      "val_size": 48,
+      "label_hist": [
+        280,
+        75,
+        46,
+        32
+      ],
+      "attribute_hist": {
+        "Business": 46,
+        "Sci/Tech": 32,
+        "Sports": 75,
+        "World": 280
+      }
+    }
+  ]
+}

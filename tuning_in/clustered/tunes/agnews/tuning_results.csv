@@ -1,0 +1,7 @@
+strategy,trial,params,val_accuracy_last3,status,run_id
+clustered,1,"{""aggregation.clustered.rule"": ""equal"", ""aggregation.clustered.tau_quantile"": 0.15, ""train.lr"": 0.0001}",0.8997493333333333,completed,agnews-clustered-a0.5-p0.2-s1000-8b7bf699
+clustered,2,"{""aggregation.clustered.rule"": ""equal"", ""aggregation.clustered.tau_quantile"": 0.15, ""train.lr"": 0.0005}",0.9014203333333333,completed,agnews-clustered-a0.5-p0.2-s1000-5103bcb8
+clustered,3,"{""aggregation.clustered.rule"": ""equal"", ""aggregation.clustered.tau_quantile"": 0.25, ""train.lr"": 0.0002}",0.913116,completed,agnews-clustered-a0.5-p0.2-s1000-b88985d0
+clustered,4,"{""aggregation.clustered.rule"": ""equal"", ""aggregation.clustered.tau_quantile"": 0.4, ""train.lr"": 0.001}",0.9147866666666666,completed,agnews-clustered-a0.5-p0.2-s1000-817b27ee
+clustered,5,"{""aggregation.clustered.rule"": ""sqrt"", ""aggregation.clustered.tau_quantile"": 0.4, ""train.lr"": 0.0001}",0.903091,completed,agnews-clustered-a0.5-p0.2-s1000-a3a88e5a
+clustered,6,"{""aggregation.clustered.rule"": ""sqrt"", ""aggregation.clustered.tau_quantile"": 0.4, ""train.lr"": 0.0002}",0.9014203333333333,completed,agnews-clustered-a0.5-p0.2-s1000-f408053d

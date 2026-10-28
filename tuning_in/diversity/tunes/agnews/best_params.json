@@ -1,0 +1,16 @@
+{
+  "tuning_seed": 1000,
+  "select": "mean val accuracy over last 3 rounds",
+  "best": {
+    "diversity": {
+      "params": {
+        "aggregation.diversity.kappa": 0.75,
+        "aggregation.diversity.lam": 0.25,
+        "train.lr": 0.0005
+      },
+      "score": 0.9039266666666667,
+      "trial": 6,
+      "run_id": "agnews-diversity-a0.5-p0.2-s1000-0ca75478"
+    }
+  }
+}

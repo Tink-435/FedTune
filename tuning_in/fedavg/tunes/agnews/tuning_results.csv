@@ -1,0 +1,7 @@
+strategy,trial,params,val_accuracy_last3,status,run_id
+fedavg,1,"{""train.lr"": 5e-05}",0.8905596666666665,completed,agnews-fedavg-a0.5-p0.2-s1000-8c034f89
+fedavg,2,"{""train.lr"": 0.0001}",0.90142,completed,agnews-fedavg-a0.5-p0.2-s1000-161890a0
+fedavg,3,"{""train.lr"": 0.0002}",0.904762,completed,agnews-fedavg-a0.5-p0.2-s1000-ed5bceb0
+fedavg,4,"{""train.lr"": 0.0005}",0.903091,completed,agnews-fedavg-a0.5-p0.2-s1000-8c3bfbdf
+fedavg,5,"{""train.lr"": 0.001}",0.9047616666666668,completed,agnews-fedavg-a0.5-p0.2-s1000-612ca4b4
+fedavg,6,"{""train.lr"": 0.002}",0.9072683333333332,completed,agnews-fedavg-a0.5-p0.2-s1000-a998293b

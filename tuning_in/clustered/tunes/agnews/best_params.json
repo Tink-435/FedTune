@@ -1,0 +1,16 @@
+{
+  "tuning_seed": 1000,
+  "select": "mean val accuracy over last 3 rounds",
+  "best": {
+    "clustered": {
+      "params": {
+        "aggregation.clustered.rule": "equal",
+        "aggregation.clustered.tau_quantile": 0.4,
+        "train.lr": 0.001
+      },
+      "score": 0.9147866666666666,
+      "trial": 4,
+      "run_id": "agnews-clustered-a0.5-p0.2-s1000-817b27ee"
+    }
+  }
+}

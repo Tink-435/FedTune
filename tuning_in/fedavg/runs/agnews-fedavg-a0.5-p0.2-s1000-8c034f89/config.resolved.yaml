@@ -1,0 +1,152 @@
+experiment:
+  name: agnews
+  seed: 1000
+  rounds: 15
+  num_clients: 10
+  strategy:
+  - fedavg
+  output_dir: /kaggle/working/runs
+  checkpoint_every: 5
+  eval_every: 1
+data:
+  task: classification
+  dataset: ag_news
+  languages: null
+  text_fields:
+  - text
+  label_field: label
+  attribute_field: null
+  max_examples: 8000
+  max_length: 96
+  test_frac: 0.1
+  reference_frac: 0.02
+  val_frac: 0.1
+  global_val_frac: 0.05
+  partition:
+    mode: dirichlet
+    alpha: 0.5
+    min_size: 40
+    max_tries: 20
+    quantity_beta: null
+model:
+  base: distilbert-base-uncased
+  lora:
+    rank: 8
+    alpha: 16.0
+    dropout: 0.0
+    target_modules:
+    - q_lin
+    - v_lin
+  deterministic: false
+  device: auto
+train:
+  local_epochs: 1
+  max_steps: null
+  lr: 5.0e-05
+  batch_size: 16
+  grad_clip: 1.0
+  weight_decay: 0.0
+dropout:
+  rate: 0.2
+  min_participants: 3
+  stale_updates: false
+  stale_max_age: 2
+  stale_discount: 0.5
+aggregation:
+  lora_method: adapter_average
+  diversity:
+    lam: 0.5
+    kappa: 0.5
+    eps: 0.001
+    w_max: 0.4
+    codebook_size: 32
+    embed_dim: 64
+  clustered:
+    tau: 0.6
+    tau_mode: quantile
+    tau_quantile: 0.25
+    min_spread: 0.01
+    num_clusters: null
+    warmup_rounds: 1
+    rule: equal
+  hybrid:
+    rho: 0.5
+    omega_max: 0.5
+evaluation:
+  test_every_round: false
+  final_test: false
+strategy_overrides: {}
+grid:
+  alpha:
+  - 0.1
+  - 0.5
+  - 5.0
+  dropout_rate:
+  - 0.0
+  - 0.2
+  - 0.5
+  seeds:
+  - 1
+  - 2
+  - 3
+tune:
+  seed: 1000
+  trials: 6
+  alpha: 0.5
+  dropout_rate: 0.2
+  select_metric: accuracy
+  select_last: 3
+  space:
+    fedavg:
+      train.lr:
+      - 5.0e-05
+      - 0.0001
+      - 0.0002
+      - 0.0005
+      - 0.001
+      - 0.002
+    diversity:
+      train.lr:
+      - 0.0001
+      - 0.0002
+      - 0.0005
+      - 0.001
+      aggregation.diversity.lam:
+      - 0.25
+      - 0.5
+      - 0.75
+      aggregation.diversity.kappa:
+      - 0.25
+      - 0.5
+      - 0.75
+    clustered:
+      train.lr:
+      - 0.0001
+      - 0.0002
+      - 0.0005
+      - 0.001
+      aggregation.clustered.tau_quantile:
+      - 0.15
+      - 0.25
+      - 0.4
+      aggregation.clustered.rule:
+      - equal
+      - sqrt
+    hybrid:
+      train.lr:
+      - 0.0001
+      - 0.0002
+      - 0.0005
+      - 0.001
+      aggregation.clustered.tau_quantile:
+      - 0.15
+      - 0.25
+      - 0.4
+      aggregation.diversity.lam:
+      - 0.25
+      - 0.5
+      - 0.75
+      aggregation.hybrid.rho:
+      - 0.25
+      - 0.5
+config_hash: e40993c7584fa27a

@@ -1,0 +1,7 @@
+strategy,trial,params,val_accuracy_last3,status,run_id
+diversity,1,"{""aggregation.diversity.kappa"": 0.25, ""aggregation.diversity.lam"": 0.25, ""train.lr"": 0.0001}",0.900585,completed,agnews-diversity-a0.5-p0.2-s1000-babece74
+diversity,2,"{""aggregation.diversity.kappa"": 0.25, ""aggregation.diversity.lam"": 0.75, ""train.lr"": 0.0001}",0.8980783333333333,completed,agnews-diversity-a0.5-p0.2-s1000-5b732385
+diversity,3,"{""aggregation.diversity.kappa"": 0.5, ""aggregation.diversity.lam"": 0.25, ""train.lr"": 0.0001}",0.8997493333333333,completed,agnews-diversity-a0.5-p0.2-s1000-d014c2ac
+diversity,4,"{""aggregation.diversity.kappa"": 0.5, ""aggregation.diversity.lam"": 0.25, ""train.lr"": 0.0002}",0.9039263333333333,completed,agnews-diversity-a0.5-p0.2-s1000-37d0bfb5
+diversity,5,"{""aggregation.diversity.kappa"": 0.75, ""aggregation.diversity.lam"": 0.25, ""train.lr"": 0.0001}",0.9005846666666667,completed,agnews-diversity-a0.5-p0.2-s1000-ca187bd1
+diversity,6,"{""aggregation.diversity.kappa"": 0.75, ""aggregation.diversity.lam"": 0.25, ""train.lr"": 0.0005}",0.9039266666666667,completed,agnews-diversity-a0.5-p0.2-s1000-0ca75478

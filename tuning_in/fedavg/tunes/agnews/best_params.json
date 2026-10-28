@@ -1,0 +1,14 @@
+{
+  "tuning_seed": 1000,
+  "select": "mean val accuracy over last 3 rounds",
+  "best": {
+    "fedavg": {
+      "params": {
+        "train.lr": 0.002
+      },
+      "score": 0.9072683333333332,
+      "trial": 6,
+      "run_id": "agnews-fedavg-a0.5-p0.2-s1000-a998293b"
+    }
+  }
+}
