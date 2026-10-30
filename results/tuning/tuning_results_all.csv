@@ -1,0 +1,25 @@
+strategy,trial,params,val_accuracy_last3,status,run_id
+fedavg,1,"{""train.lr"": 5e-05}",0.8905596666666665,completed,agnews-fedavg-a0.5-p0.2-s1000-8c034f89
+fedavg,2,"{""train.lr"": 0.0001}",0.90142,completed,agnews-fedavg-a0.5-p0.2-s1000-161890a0
+fedavg,3,"{""train.lr"": 0.0002}",0.904762,completed,agnews-fedavg-a0.5-p0.2-s1000-ed5bceb0
+fedavg,4,"{""train.lr"": 0.0005}",0.903091,completed,agnews-fedavg-a0.5-p0.2-s1000-8c3bfbdf
+fedavg,5,"{""train.lr"": 0.001}",0.9047616666666668,completed,agnews-fedavg-a0.5-p0.2-s1000-612ca4b4
+fedavg,6,"{""train.lr"": 0.002}",0.9072683333333332,completed,agnews-fedavg-a0.5-p0.2-s1000-a998293b
+diversity,1,"{""aggregation.diversity.kappa"": 0.25, ""aggregation.diversity.lam"": 0.25, ""train.lr"": 0.0001}",0.900585,completed,agnews-diversity-a0.5-p0.2-s1000-babece74
+diversity,2,"{""aggregation.diversity.kappa"": 0.25, ""aggregation.diversity.lam"": 0.75, ""train.lr"": 0.0001}",0.8980783333333333,completed,agnews-diversity-a0.5-p0.2-s1000-5b732385
+diversity,3,"{""aggregation.diversity.kappa"": 0.5, ""aggregation.diversity.lam"": 0.25, ""train.lr"": 0.0001}",0.8997493333333333,completed,agnews-diversity-a0.5-p0.2-s1000-d014c2ac
+diversity,4,"{""aggregation.diversity.kappa"": 0.5, ""aggregation.diversity.lam"": 0.25, ""train.lr"": 0.0002}",0.9039263333333333,completed,agnews-diversity-a0.5-p0.2-s1000-37d0bfb5
+diversity,5,"{""aggregation.diversity.kappa"": 0.75, ""aggregation.diversity.lam"": 0.25, ""train.lr"": 0.0001}",0.9005846666666667,completed,agnews-diversity-a0.5-p0.2-s1000-ca187bd1
+diversity,6,"{""aggregation.diversity.kappa"": 0.75, ""aggregation.diversity.lam"": 0.25, ""train.lr"": 0.0005}",0.9039266666666667,completed,agnews-diversity-a0.5-p0.2-s1000-0ca75478
+clustered,1,"{""aggregation.clustered.rule"": ""equal"", ""aggregation.clustered.tau_quantile"": 0.15, ""train.lr"": 0.0001}",0.8997493333333333,completed,agnews-clustered-a0.5-p0.2-s1000-8b7bf699
+clustered,2,"{""aggregation.clustered.rule"": ""equal"", ""aggregation.clustered.tau_quantile"": 0.15, ""train.lr"": 0.0005}",0.9014203333333333,completed,agnews-clustered-a0.5-p0.2-s1000-5103bcb8
+clustered,3,"{""aggregation.clustered.rule"": ""equal"", ""aggregation.clustered.tau_quantile"": 0.25, ""train.lr"": 0.0002}",0.913116,completed,agnews-clustered-a0.5-p0.2-s1000-b88985d0
+clustered,4,"{""aggregation.clustered.rule"": ""equal"", ""aggregation.clustered.tau_quantile"": 0.4, ""train.lr"": 0.001}",0.9147866666666666,completed,agnews-clustered-a0.5-p0.2-s1000-817b27ee
+clustered,5,"{""aggregation.clustered.rule"": ""sqrt"", ""aggregation.clustered.tau_quantile"": 0.4, ""train.lr"": 0.0001}",0.903091,completed,agnews-clustered-a0.5-p0.2-s1000-a3a88e5a
+clustered,6,"{""aggregation.clustered.rule"": ""sqrt"", ""aggregation.clustered.tau_quantile"": 0.4, ""train.lr"": 0.0002}",0.9014203333333333,completed,agnews-clustered-a0.5-p0.2-s1000-f408053d
+hybrid,1,"{""aggregation.clustered.tau_quantile"": 0.15, ""aggregation.diversity.lam"": 0.25, ""aggregation.hybrid.rho"": 0.25, ""train.lr"": 0.0002}",0.893066,completed,agnews-hybrid-a0.5-p0.2-s1000-ac6b0596
+hybrid,2,"{""aggregation.clustered.tau_quantile"": 0.25, ""aggregation.diversity.lam"": 0.75, ""aggregation.hybrid.rho"": 0.5, ""train.lr"": 0.0005}",0.9039266666666667,completed,agnews-hybrid-a0.5-p0.2-s1000-0eb43c1c
+hybrid,3,"{""aggregation.clustered.tau_quantile"": 0.4, ""aggregation.diversity.lam"": 0.25, ""aggregation.hybrid.rho"": 0.25, ""train.lr"": 0.0001}",0.887218,completed,agnews-hybrid-a0.5-p0.2-s1000-5edb01d2
+hybrid,4,"{""aggregation.clustered.tau_quantile"": 0.4, ""aggregation.diversity.lam"": 0.5, ""aggregation.hybrid.rho"": 0.25, ""train.lr"": 0.001}",0.903091,completed,agnews-hybrid-a0.5-p0.2-s1000-31484ca0
+hybrid,5,"{""aggregation.clustered.tau_quantile"": 0.4, ""aggregation.diversity.lam"": 0.5, ""aggregation.hybrid.rho"": 0.5, ""train.lr"": 0.0001}",0.8922306666666667,completed,agnews-hybrid-a0.5-p0.2-s1000-85ecbb97
+hybrid,6,"{""aggregation.clustered.tau_quantile"": 0.4, ""aggregation.diversity.lam"": 0.5, ""aggregation.hybrid.rho"": 0.5, ""train.lr"": 0.0002}",0.898914,completed,agnews-hybrid-a0.5-p0.2-s1000-81d4a658
