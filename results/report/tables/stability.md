@@ -1,0 +1,16 @@
+| alpha | strategy | runs | final test acc | val acc (last 3 rounds) | oscillation (SD of val acc, rounds 6+) | largest one-round drop |
+|---|---|---|---|---|---|---|
+| 0.1 | fedavg | 9 | 0.801 | 0.826 | 0.068 | 0.145 |
+| 0.1 | diversity | 9 | 0.861 | 0.876 | 0.033 | 0.078 |
+| 0.1 | clustered | 9 | 0.850 | 0.862 | 0.047 | 0.104 |
+| 0.1 | hybrid | 9 | 0.843 | 0.854 | 0.045 | 0.108 |
+| 0.5 | fedavg | 9 | 0.904 | 0.917 | 0.013 | 0.023 |
+| 0.5 | diversity | 9 | 0.907 | 0.918 | 0.008 | 0.020 |
+| 0.5 | clustered | 9 | 0.903 | 0.916 | 0.017 | 0.025 |
+| 0.5 | hybrid | 9 | 0.900 | 0.916 | 0.011 | 0.022 |
+| 5 | fedavg | 9 | 0.911 | 0.929 | 0.004 | 0.009 |
+| 5 | diversity | 9 | 0.908 | 0.926 | 0.004 | 0.008 |
+| 5 | clustered | 9 | 0.912 | 0.932 | 0.004 | 0.008 |
+| 5 | hybrid | 9 | 0.908 | 0.925 | 0.004 | 0.009 |
+
+Means over all runs at that alpha. Oscillation is a secondary, post hoc metric.

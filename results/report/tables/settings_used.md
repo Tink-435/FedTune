@@ -1,0 +1,8 @@
+| strategy | settings as run |
+|---|---|
+| fedavg | lr=0.002 |
+| diversity | lr=0.0005, lam=0.25, kappa=0.75, w_max=0.4 |
+| clustered | lr=0.001, tau_quantile=0.4, rule=equal |
+| hybrid | lr=0.0005, lam=0.75, kappa=0.5, w_max=0.4, tau_quantile=0.25, rule=equal, rho=0.5, omega_max=0.5 |
+
+Taken from config.resolved.yaml of one run per strategy. Learning rates differ across strategies because each was tuned separately.
