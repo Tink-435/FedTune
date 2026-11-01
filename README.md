@@ -24,7 +24,7 @@ fedtune tune -c configs/tune.yaml           # -> tunes/agnews/tuned.yaml
 fedtune grid -c tunes/agnews/tuned.yaml --shard 0/3      # 1/3, 2/3 on the other machines
 ```
 
-**Datasets are bundled** in `data/`, unmodified: AG News (127,600 texts), MultiNLI (412,349
+**Datasets** (unmodified; only `ag_news/` is stored in this git repository because MNLI's training file exceeds GitHub's 100 MB limit, see `data/README.md` for MNLI and XNLI): AG News (127,600 texts), MultiNLI (412,349
 sentence pairs, 10 genres) and XNLI (112,500 pairs, 15 languages). See `data/README.md` for
 sources and licences. Only the pretrained model is downloaded, once, on first use.
 
