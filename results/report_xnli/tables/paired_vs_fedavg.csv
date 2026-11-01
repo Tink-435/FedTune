@@ -1,0 +1,46 @@
+metric,subset,strategy,pairs,diff (pp),CI95 low,CI95 high,wins/losses,sign p,Wilcoxon p
+final test accuracy,all pairs,diversity,27,-0.49,-0.88,-0.10,10/17,0.248,0.032
+final test accuracy,all pairs,clustered,27,-0.36,-0.70,-0.03,7/20,0.019,0.032
+final test accuracy,all pairs,hybrid,27,-0.15,-0.37,+0.07,9/16,0.230,0.150
+final test macro-F1,all pairs,diversity,27,-0.41,-0.80,-0.03,10/17,0.248,0.077
+final test macro-F1,all pairs,clustered,27,-0.37,-0.71,-0.03,8/19,0.052,0.036
+final test macro-F1,all pairs,hybrid,27,-0.17,-0.39,+0.05,10/17,0.248,0.135
+worst-client accuracy,all pairs,diversity,27,-0.89,-1.86,+0.08,9/16,0.230,0.106
+worst-client accuracy,all pairs,clustered,27,-0.22,-1.20,+0.76,9/11,0.824,0.626
+worst-client accuracy,all pairs,hybrid,27,+0.22,-0.42,+0.87,13/9,0.523,0.769
+"validation accuracy, last 3 rounds",all pairs,diversity,27,-0.84,-1.20,-0.48,4/23,0.000,0.000
+"validation accuracy, last 3 rounds",all pairs,clustered,27,-0.39,-0.64,-0.14,8/18,0.076,0.009
+"validation accuracy, last 3 rounds",all pairs,hybrid,27,-0.20,-0.44,+0.04,8/18,0.076,0.096
+oscillation (negative = more stable),all pairs,diversity,27,+0.31,+0.19,+0.44,24/3,0.000,0.000
+oscillation (negative = more stable),all pairs,clustered,27,+0.18,+0.05,+0.30,20/7,0.019,0.008
+oscillation (negative = more stable),all pairs,hybrid,27,+0.03,-0.08,+0.15,14/13,1.000,0.679
+final test accuracy,alpha = 0.1 (most skewed; post hoc),diversity,9,-0.51,-1.54,+0.52,4/5,1.000,0.570
+final test accuracy,alpha = 0.1 (most skewed; post hoc),clustered,9,-0.92,-1.76,-0.07,1/8,0.039,0.039
+final test accuracy,alpha = 0.1 (most skewed; post hoc),hybrid,9,-0.34,-0.80,+0.11,2/7,0.180,0.164
+final test macro-F1,alpha = 0.1 (most skewed; post hoc),diversity,9,-0.41,-1.39,+0.58,4/5,1.000,0.652
+final test macro-F1,alpha = 0.1 (most skewed; post hoc),clustered,9,-0.93,-1.75,-0.10,1/8,0.039,0.027
+final test macro-F1,alpha = 0.1 (most skewed; post hoc),hybrid,9,-0.38,-0.85,+0.08,2/7,0.180,0.164
+worst-client accuracy,alpha = 0.1 (most skewed; post hoc),diversity,9,-0.67,-2.35,+1.01,3/5,0.727,0.344
+worst-client accuracy,alpha = 0.1 (most skewed; post hoc),clustered,9,-0.54,-2.95,+1.88,3/5,0.727,0.562
+worst-client accuracy,alpha = 0.1 (most skewed; post hoc),hybrid,9,-0.27,-1.56,+1.02,3/4,1.000,0.375
+"validation accuracy, last 3 rounds",alpha = 0.1 (most skewed; post hoc),diversity,9,-0.63,-1.05,-0.21,1/8,0.039,0.020
+"validation accuracy, last 3 rounds",alpha = 0.1 (most skewed; post hoc),clustered,9,-0.27,-0.67,+0.12,2/6,0.289,0.195
+"validation accuracy, last 3 rounds",alpha = 0.1 (most skewed; post hoc),hybrid,9,+0.11,-0.42,+0.63,5/4,1.000,0.820
+oscillation (negative = more stable),alpha = 0.1 (most skewed; post hoc),diversity,9,+0.27,-0.04,+0.57,7/2,0.180,0.027
+oscillation (negative = more stable),alpha = 0.1 (most skewed; post hoc),clustered,9,+0.32,+0.08,+0.56,7/2,0.180,0.020
+oscillation (negative = more stable),alpha = 0.1 (most skewed; post hoc),hybrid,9,+0.13,-0.13,+0.38,5/4,1.000,0.496
+final test accuracy,alpha > 0.1,diversity,18,-0.48,-0.88,-0.08,6/12,0.238,0.038
+final test accuracy,alpha > 0.1,clustered,18,-0.09,-0.36,+0.19,6/12,0.238,0.306
+final test accuracy,alpha > 0.1,hybrid,18,-0.06,-0.32,+0.21,7/9,0.804,0.552
+final test macro-F1,alpha > 0.1,diversity,18,-0.42,-0.83,-0.00,6/12,0.238,0.074
+final test macro-F1,alpha > 0.1,clustered,18,-0.09,-0.37,+0.19,7/11,0.481,0.393
+final test macro-F1,alpha > 0.1,hybrid,18,-0.06,-0.32,+0.20,8/10,0.815,0.551
+worst-client accuracy,alpha > 0.1,diversity,18,-1.00,-2.31,+0.30,6/11,0.332,0.245
+worst-client accuracy,alpha > 0.1,clustered,18,-0.07,-1.14,+1.01,6/6,1.000,0.937
+worst-client accuracy,alpha > 0.1,hybrid,18,+0.47,-0.33,+1.27,10/5,0.302,0.264
+"validation accuracy, last 3 rounds",alpha > 0.1,diversity,18,-0.94,-1.46,-0.42,3/15,0.008,0.002
+"validation accuracy, last 3 rounds",alpha > 0.1,clustered,18,-0.45,-0.79,-0.11,6/12,0.238,0.027
+"validation accuracy, last 3 rounds",alpha > 0.1,hybrid,18,-0.35,-0.60,-0.10,3/14,0.013,0.015
+oscillation (negative = more stable),alpha > 0.1,diversity,18,+0.33,+0.20,+0.47,17/1,0.000,0.000
+oscillation (negative = more stable),alpha > 0.1,clustered,18,+0.11,-0.05,+0.26,13/5,0.096,0.154
+oscillation (negative = more stable),alpha > 0.1,hybrid,18,-0.02,-0.15,+0.12,9/9,1.000,0.832

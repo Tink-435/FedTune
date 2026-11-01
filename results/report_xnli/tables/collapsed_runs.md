@@ -1,0 +1,2 @@
+| strategy | alpha | dropout | seed | final test acc | worst-client acc |
+|---|---|---|---|---|---|

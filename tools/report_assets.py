@@ -2,7 +2,7 @@
 """Build the report tables (CSV + Markdown) and figures (PNG) from a folder of finished runs.
 
     python tools/report_assets.py merged/runs --out results/report
-    python tools/report_assets.py merged_xnli/runs --out results/report_xnli --collapse-below 0.5
+    python tools/report_assets.py merged_xnli/runs --out results/report_xnli --collapse-below 0.5 --ylim 0.5 0.7
 
 Reads results only (run_summary.json, rounds.jsonl, config.resolved.yaml); runs nothing.
 
@@ -254,7 +254,7 @@ def style(ax):
         ax.spines[side].set_visible(False)
 
 
-def fig_accuracy(runs, out):
+def fig_accuracy(runs, out, ylim=None):
     alphas, drops = sorted({r.alpha for r in runs}), sorted({r.dropout for r in runs})
     fig, axes = plt.subplots(1, len(alphas), figsize=(4.2 * len(alphas), 3.8), sharey=True, squeeze=False)
     for ax, a in zip(axes[0], alphas):
@@ -268,6 +268,8 @@ def fig_accuracy(runs, out):
         ax.set_xlabel("dropout rate")
         style(ax)
     axes[0][0].set_ylabel("final test accuracy (mean +- SD over seeds)")
+    if ylim:
+        axes[0][0].set_ylim(*ylim)
     axes[0][-1].legend(frameon=False, fontsize=9, loc="lower left")
     fig.tight_layout()
     fig.savefig(out / "fig1_accuracy_vs_dropout.png", dpi=200)
@@ -356,6 +358,7 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("runs", type=Path, help="folder holding the run directories (e.g. merged/runs)")
     ap.add_argument("--out", type=Path, default=Path("results/report"))
+    ap.add_argument("--ylim", type=float, nargs=2, metavar=("LOW", "HIGH"), help="y-range of the accuracy figure (default: automatic)")
     ap.add_argument("--collapse-below", type=float, default=0.80, help="final test accuracy below this counts as a collapse")
     a = ap.parse_args(argv)
 
@@ -371,7 +374,7 @@ def main(argv: list[str] | None = None) -> int:
     collapse_table(runs, tables, a.collapse_below)
     settings_table(runs, tables)
     cost_table(runs, tables)
-    fig_accuracy(runs, figures)
+    fig_accuracy(runs, figures, a.ylim)
     fig_curves(runs, figures)
     fig_paired(results, runs, figures)
     fig_oscillation(runs, figures)

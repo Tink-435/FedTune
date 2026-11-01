@@ -1,0 +1,59 @@
+# Fair tuning protocol (Design 2.3.4) + final grid on XNLI (language skew). Same protocol as configs/tune.yaml
+# (AG News); only the data, the base model and the client count differ -- see "Differences" below.
+#
+#   fedtune tune -c configs/tune_xnli.yaml            # 4 strategies x 6 trials on tuning seed 1000 -> tunes/xnli/tuned.yaml
+#   fedtune grid -c tunes/xnli/tuned.yaml --shard i/6 # 3 alpha x 3 dropout x 3 seeds x 4 strategies (108 runs), 18 per shard
+#   (Kaggle: tools/merge_tuning.py joins the four per-strategy tuning results into ONE frozen tuned.yaml first.)
+#
+# Differences from configs/tune.yaml (AG News), and why:
+#   data.dataset: xnli, text_fields: [premise, hypothesis]  sentence PAIRS, 3 labels (entailment/neutral/contradiction)
+#   data.languages: 6 languages                              home attribute = language
+#   partition.mode: language                                 grid alpha -> eta = 1/(1+alpha) = share of a client's data in
+#                                                            its home language; alpha 5.0 -> eta = 1/6 = exactly uniform
+#                                                            over 6 languages, i.e. the "almost IID" end of the grid
+#   experiment.num_clients: 12                               2 home clients per language (round-robin), so every language
+#                                                            has exactly two clients that can cluster together; also keeps
+#                                                            ~6 clients per round at dropout 0.5 (min_participants 3)
+#   data.max_length: 128, max_examples: 12000                premise+hypothesis pairs are longer than AG News texts
+#   model.base: distilbert-base-multilingual-cased           same DistilBERT architecture -> same LoRA targets (q_lin, v_lin)
+# Everything else (rounds, LoRA rank/alpha, local epochs, batch size, tune space/trials/seed, grid axes, aggregation
+# defaults, adapter_average) is identical to configs/tune.yaml so the two datasets are comparable.
+experiment: {name: xnli, rounds: 15, num_clients: 12, checkpoint_every: 5,
+             strategy: [fedavg, diversity, clustered, hybrid]}
+data:
+  dataset: xnli
+  text_fields: [premise, hypothesis]
+  languages: [en, fr, es, de, hi, zh]
+  max_examples: 12000
+  max_length: 128
+  global_val_frac: 0.05
+  partition: {mode: language, alpha: 0.5, min_size: 40}
+model: {base: distilbert-base-multilingual-cased, lora: {rank: 8, alpha: 16, target_modules: [q_lin, v_lin]}}
+train: {local_epochs: 1, lr: 2.0e-4, batch_size: 16}
+dropout: {rate: 0.2, min_participants: 3}
+aggregation:
+  lora_method: adapter_average
+  clustered: {tau_mode: quantile, tau_quantile: 0.25, rule: equal, warmup_rounds: 1}
+tune:
+  seed: 1000                     # separate from grid.seeds (checked)
+  trials: 6
+  alpha: 0.5
+  dropout_rate: 0.2
+  select_metric: accuracy
+  select_last: 3
+  space:
+    fedavg:    {train.lr: [5.0e-5, 1.0e-4, 2.0e-4, 5.0e-4, 1.0e-3, 2.0e-3]}
+    diversity: {train.lr: [1.0e-4, 2.0e-4, 5.0e-4, 1.0e-3],
+                aggregation.diversity.lam: [0.25, 0.5, 0.75],
+                aggregation.diversity.kappa: [0.25, 0.5, 0.75]}
+    clustered: {train.lr: [1.0e-4, 2.0e-4, 5.0e-4, 1.0e-3],
+                aggregation.clustered.tau_quantile: [0.15, 0.25, 0.4],
+                aggregation.clustered.rule: [equal, sqrt]}
+    hybrid:    {train.lr: [1.0e-4, 2.0e-4, 5.0e-4, 1.0e-3],
+                aggregation.clustered.tau_quantile: [0.15, 0.25, 0.4],
+                aggregation.diversity.lam: [0.25, 0.5, 0.75],
+                aggregation.hybrid.rho: [0.25, 0.5]}
+grid:
+  alpha: [0.1, 0.5, 5.0]         # smaller = more skewed (language mode: eta = 1/(1+alpha))
+  dropout_rate: [0.0, 0.2, 0.5]
+  seeds: [1, 2, 3]

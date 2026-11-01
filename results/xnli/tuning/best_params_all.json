@@ -1,0 +1,45 @@
+{
+  "tuning_seed": 1000,
+  "select": "mean val accuracy over last 3 rounds",
+  "best": {
+    "fedavg": {
+      "params": {
+        "train.lr": 0.001
+      },
+      "score": 0.628889,
+      "trial": 5,
+      "run_id": "xnli-fedavg-a0.5-p0.2-s1000-32076ad7"
+    },
+    "diversity": {
+      "params": {
+        "aggregation.diversity.kappa": 0.75,
+        "aggregation.diversity.lam": 0.25,
+        "train.lr": 0.0005
+      },
+      "score": 0.6166666666666666,
+      "trial": 6,
+      "run_id": "xnli-diversity-a0.5-p0.2-s1000-f5a4af2a"
+    },
+    "clustered": {
+      "params": {
+        "aggregation.clustered.rule": "equal",
+        "aggregation.clustered.tau_quantile": 0.4,
+        "train.lr": 0.001
+      },
+      "score": 0.6255556666666666,
+      "trial": 4,
+      "run_id": "xnli-clustered-a0.5-p0.2-s1000-fbe4c0f8"
+    },
+    "hybrid": {
+      "params": {
+        "aggregation.clustered.tau_quantile": 0.4,
+        "aggregation.diversity.lam": 0.5,
+        "aggregation.hybrid.rho": 0.25,
+        "train.lr": 0.001
+      },
+      "score": 0.6200003333333334,
+      "trial": 4,
+      "run_id": "xnli-hybrid-a0.5-p0.2-s1000-a61aaa14"
+    }
+  }
+}

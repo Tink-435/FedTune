@@ -1,0 +1,7 @@
+strategy,alpha,skew type,runs,mean ARI vs skew,shuffled baseline
+clustered,0.1,attribute,9,+0.10,-0.02
+clustered,0.5,attribute,9,+0.03,-0.01
+clustered,5,attribute,9,+0.01,-0.00
+hybrid,0.1,attribute,9,+0.06,+0.03
+hybrid,0.5,attribute,9,+0.04,+0.01
+hybrid,5,attribute,9,-0.02,+0.02

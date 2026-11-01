@@ -1,0 +1,25 @@
+strategy,trial,params,val_accuracy_last3,status,run_id
+fedavg,1,"{""train.lr"": 5e-05}",0.473333,completed,xnli-fedavg-a0.5-p0.2-s1000-7dcc8229
+fedavg,2,"{""train.lr"": 0.0001}",0.532222,completed,xnli-fedavg-a0.5-p0.2-s1000-b5885278
+fedavg,3,"{""train.lr"": 0.0002}",0.5755556666666667,completed,xnli-fedavg-a0.5-p0.2-s1000-816f6a6f
+fedavg,4,"{""train.lr"": 0.0005}",0.6177779999999999,completed,xnli-fedavg-a0.5-p0.2-s1000-889db3d8
+fedavg,5,"{""train.lr"": 0.001}",0.628889,completed,xnli-fedavg-a0.5-p0.2-s1000-32076ad7
+fedavg,6,"{""train.lr"": 0.002}",0.6188889999999999,completed,xnli-fedavg-a0.5-p0.2-s1000-feda5681
+diversity,1,"{""aggregation.diversity.kappa"": 0.25, ""aggregation.diversity.lam"": 0.25, ""train.lr"": 0.0001}",0.5338886666666667,completed,xnli-diversity-a0.5-p0.2-s1000-7d909688
+diversity,2,"{""aggregation.diversity.kappa"": 0.25, ""aggregation.diversity.lam"": 0.75, ""train.lr"": 0.0001}",0.5427776666666667,completed,xnli-diversity-a0.5-p0.2-s1000-ae77b81c
+diversity,3,"{""aggregation.diversity.kappa"": 0.5, ""aggregation.diversity.lam"": 0.25, ""train.lr"": 0.0001}",0.533889,completed,xnli-diversity-a0.5-p0.2-s1000-78596fdd
+diversity,4,"{""aggregation.diversity.kappa"": 0.5, ""aggregation.diversity.lam"": 0.25, ""train.lr"": 0.0002}",0.5761109999999999,completed,xnli-diversity-a0.5-p0.2-s1000-1f8eec4c
+diversity,5,"{""aggregation.diversity.kappa"": 0.75, ""aggregation.diversity.lam"": 0.25, ""train.lr"": 0.0001}",0.535,completed,xnli-diversity-a0.5-p0.2-s1000-e5df2c0b
+diversity,6,"{""aggregation.diversity.kappa"": 0.75, ""aggregation.diversity.lam"": 0.25, ""train.lr"": 0.0005}",0.6166666666666666,completed,xnli-diversity-a0.5-p0.2-s1000-f5a4af2a
+clustered,1,"{""aggregation.clustered.rule"": ""equal"", ""aggregation.clustered.tau_quantile"": 0.15, ""train.lr"": 0.0001}",0.5316663333333334,completed,xnli-clustered-a0.5-p0.2-s1000-5a29529f
+clustered,2,"{""aggregation.clustered.rule"": ""equal"", ""aggregation.clustered.tau_quantile"": 0.15, ""train.lr"": 0.0005}",0.6133333333333333,completed,xnli-clustered-a0.5-p0.2-s1000-f099021b
+clustered,3,"{""aggregation.clustered.rule"": ""equal"", ""aggregation.clustered.tau_quantile"": 0.25, ""train.lr"": 0.0002}",0.5766666666666667,completed,xnli-clustered-a0.5-p0.2-s1000-d339fbc2
+clustered,4,"{""aggregation.clustered.rule"": ""equal"", ""aggregation.clustered.tau_quantile"": 0.4, ""train.lr"": 0.001}",0.6255556666666666,completed,xnli-clustered-a0.5-p0.2-s1000-fbe4c0f8
+clustered,5,"{""aggregation.clustered.rule"": ""sqrt"", ""aggregation.clustered.tau_quantile"": 0.4, ""train.lr"": 0.0001}",0.5283333333333333,completed,xnli-clustered-a0.5-p0.2-s1000-fee218dd
+clustered,6,"{""aggregation.clustered.rule"": ""sqrt"", ""aggregation.clustered.tau_quantile"": 0.4, ""train.lr"": 0.0002}",0.5811109999999999,completed,xnli-clustered-a0.5-p0.2-s1000-00646d2e
+hybrid,1,"{""aggregation.clustered.tau_quantile"": 0.15, ""aggregation.diversity.lam"": 0.25, ""aggregation.hybrid.rho"": 0.25, ""train.lr"": 0.0002}",0.5772223333333333,completed,xnli-hybrid-a0.5-p0.2-s1000-0d533e25
+hybrid,2,"{""aggregation.clustered.tau_quantile"": 0.25, ""aggregation.diversity.lam"": 0.75, ""aggregation.hybrid.rho"": 0.5, ""train.lr"": 0.0005}",0.612222,completed,xnli-hybrid-a0.5-p0.2-s1000-c1452ef9
+hybrid,3,"{""aggregation.clustered.tau_quantile"": 0.4, ""aggregation.diversity.lam"": 0.25, ""aggregation.hybrid.rho"": 0.25, ""train.lr"": 0.0001}",0.5338886666666668,completed,xnli-hybrid-a0.5-p0.2-s1000-731156b3
+hybrid,4,"{""aggregation.clustered.tau_quantile"": 0.4, ""aggregation.diversity.lam"": 0.5, ""aggregation.hybrid.rho"": 0.25, ""train.lr"": 0.001}",0.6200003333333334,completed,xnli-hybrid-a0.5-p0.2-s1000-a61aaa14
+hybrid,5,"{""aggregation.clustered.tau_quantile"": 0.4, ""aggregation.diversity.lam"": 0.5, ""aggregation.hybrid.rho"": 0.5, ""train.lr"": 0.0001}",0.5327776666666667,completed,xnli-hybrid-a0.5-p0.2-s1000-b3176237
+hybrid,6,"{""aggregation.clustered.tau_quantile"": 0.4, ""aggregation.diversity.lam"": 0.5, ""aggregation.hybrid.rho"": 0.5, ""train.lr"": 0.0002}",0.573889,completed,xnli-hybrid-a0.5-p0.2-s1000-05dad1aa
