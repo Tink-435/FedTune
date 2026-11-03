@@ -592,6 +592,17 @@ def build_app(root: Path):
                          html.Ul([html.Li(h) for h in hits], className="notes") if hits else
                          html.Div("no runs found for this cell", className="note")])
 
+    @app.callback(Output("tick", "disabled"), Input("tick", "n_intervals"))
+    def stop_polling_when_done(_):
+        runs = list_runs(root)
+        if not runs:
+            return False  # keep polling if the directory is currently empty
+        for r in runs:
+            status = (read_json(root / r / "run_summary.json") or {}).get("status", "running")
+            if status == "running":
+                return False  # keep polling while at least one run is active
+        return True           # all runs finished -> freeze dashboard
+    
     return app
 
 
