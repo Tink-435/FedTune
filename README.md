@@ -1,159 +1,261 @@
-# FedTune
+# VIRTUAL-LAB ⚛️
 
-Single-machine simulator for **federated LoRA fine-tuning** of language models under controlled
-**data heterogeneity** (label skew, language skew, domain skew) and **client dropout**.
-It compares four aggregation strategies: **FedAvg**, **Diversity-aware**, **Clustered** and **Hybrid**.
+A real-time collaborative 2D physics sandbox built for university-level STEM education. Multiple users can build, run, and analyse mechanical simulations together in a shared workspace — think Google Docs, but for physics experiments.
 
-CSC-303 Computer Networks (July–Dec 2026), IIT Roorkee, Group 7.
+---
 
-## 1. What is in this bundle
+## The Problem
 
-```
-fedtune/
-├── README.md                  this file
-├── pyproject.toml             dependencies and the `fedtune` command
-├── configs/                   YAML experiment configurations (see section 4)
-├── data/                      datasets (see data/README.md for sources and licences)
-├── fedtune/                   the source code
-│   ├── cli.py                 command-line interface
-│   ├── config.py              config loading, validation, run hash
-│   ├── rng.py                 named, seeded random streams
-│   ├── protocol.py            client <-> coordinator messages and byte accounting
-│   ├── evaluation.py          accuracy and macro-F1 (validation per round, test once)
-│   ├── experiment.py          experiment, grid and tuning runners, paired statistics, export
-│   ├── data/                  dataset loading and partitioning (Dirichlet / language skew)
-│   ├── client/                local LoRA training and summaries
-│   ├── coordinator/           round loop, participation schedule, the four strategies, LoRA merge
-│   ├── infra/                 model host, checkpoints and result store
-│   └── dashboard/app.py       read-only Plotly Dash dashboard
-├── examples/custom_strategy.py   plug-in example (unweighted mean)
-└── tests/                     unit and integration tests
-```
+Teaching physics online is frustrating. Students watch static videos, read equations off a screen, and never actually *feel* how a pendulum behaves differently when you change its mass, or what happens to coupled springs when you crank up the stiffness. The gap between theory and intuition is hard to bridge without hands-on experimentation.
 
-## 2. Requirements and installation
+VIRTUAL-LAB tries to fix that by giving instructors and students a shared, live physics canvas where they can build experiments together and watch the math play out in real time.
 
-- Python (see `requires-python` in `pyproject.toml`), `pip`, and about 5 GB of free disk space.
-- A GPU (CUDA or Apple MPS) is recommended for the real experiments; the smoke test runs on CPU.
-- Internet access is needed once, to download the pretrained DistilBERT model. Everything else is offline.
+---
 
-```bash
-python -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
-pip install -e ".[dev]"
-```
+## Demo
 
-This installs the `fedtune` command. `fedtune --help` lists every command and configuration key with its default and allowed range.
+> 📹 **[Watch Demo Video](#)**
+> *(replace the # above with your actual video link — YouTube, Loom, or Google Drive all work)*
 
-## 3. Quick start
+---
 
-```bash
-# 1. Pipeline check (about 2 minutes, offline, tiny random model; accuracy stays near chance)
-fedtune run -c configs/smoke.yaml
+## What It Does
 
-# 2. Open the dashboard (http://127.0.0.1:8050); press Refresh to load new results
-fedtune dashboard --runs runs
+### For Students
+- Join a live room using a 6-character code from your instructor
+- Add physics bodies (boxes, circles, triangles, hexagons) to the shared canvas
+- Watch velocity and acceleration vectors update in real time on each body
+- See energy conservation graphs — kinetic energy, potential energy, and total energy plotted live
+- Save experiments to your personal library and revisit them later
+- Browse the experiment library and clone templates to explore on your own
 
-# 3. Run the tests (59 tests, fully offline)
-pytest
-```
+### For Instructors
+- Create a room and share the join code with your class
+- Load preset experiments: Free Fall, Simple Harmonic Motion, Coupled Springs, Pendulum, Collision
+- Lock the room so students can only observe while you demonstrate
+- Trigger chaos events that broadcast to every student simultaneously:
+  - **Flip Gravity** — reverses gravitational direction
+  - **Shockwave** — applies an outward impulse from the canvas centre
+  - **Freeze All** — stops every body mid-motion (great for pausing a demo to discuss)
+  - **Zero Gravity** — removes gravity entirely
+  - **Pin Mode** — click any body to anchor it in place
+- Publish experiment templates to the library with instructions and a grading rubric
+- Review and grade student submissions
 
-A real run (DistilBERT on AG News, all four strategies on the same partition, seed and dropout schedule):
+---
 
-```bash
-fedtune run -c configs/reference.yaml
-```
+## How Real-Time Sync Works
 
-## 4. Configurations
+This was the hardest part to get right. When the instructor drags a body, every student sees it move. When anyone adds a spring pair, it appears on all canvases simultaneously.
 
-| File | Dataset | Purpose |
+Under the hood, every canvas action (add body, load preset, drag, reset) emits a `canvas_action` socket event. The server rebroadcasts it to everyone else in the room, and each client applies the change to their local Matter.js world.
+
+For drag sync specifically, position updates fire on every `mousemove` while dragging. The server skips the database entirely for these and just rebroadcasts instantly — otherwise at 60fps you would be firing thousands of DB queries per second.
+
+---
+
+## Tech Stack
+
+| Layer | Tech | Why |
 |---|---|---|
-| `configs/smoke.yaml` | AG News subset | Smoke test / pipeline check only (random tiny model, offline) |
-| `configs/reference.yaml` | AG News | All four strategies, Dirichlet alpha = 0.3, one seed |
-| `configs/tune.yaml` | AG News | Fair tuning (6 trials per strategy on seed 1000) plus the final 3 alpha x 3 dropout x 3 seeds x 4 strategies grid |
-| `configs/grid.yaml` | AG News | The same grid without tuning (ablation) |
-| `configs/xnli_language.yaml` | XNLI | Language skew, product merge |
-| `configs/mnli_domain.yaml` | MNLI | Genre (domain) skew |
+| Frontend | React 18 | Component model, hooks for state |
+| Physics | Matter.js | Best 2D rigid body engine for browsers |
+| Real-time | Socket.io | WebSocket with fallback, rooms built-in |
+| Charts | Recharts | React-native, handles streaming data cleanly |
+| Backend | Node.js + Express | Non-blocking I/O, good fit for socket-heavy servers |
+| Database | MongoDB + Mongoose | Flexible schema for physics state JSON |
+| Auth | JWT + bcrypt | Stateless, horizontally scalable |
+| DevOps | Docker + GitHub Actions | One-command setup, automated CI |
 
-Any value can be overridden on the command line, for example
-`fedtune run -c configs/reference.yaml --set "experiment.strategy=[fedavg]"`.
+---
 
-## 5. Commands
+## Architecture
 
-| Command | What it does |
-|---|---|
-| `fedtune validate -c CFG [--set k=v ...]` | Checks a config; a bad value names the key and the allowed range |
-| `fedtune run -c CFG` | Runs every listed strategy on the same partition, seed and participation; writes `<name>-comparison.csv` |
-| `fedtune resume -c CFG` | Resumes a run from its latest atomic checkpoint |
-| `fedtune tune -c CFG [--grid]` | Fair tuning: same trial budget per strategy, scored on global validation; writes `tunes/<name>/tuned.yaml` (and runs its grid with `--grid`) |
-| `fedtune grid -c CFG [--shard i/n]` | Runs the heterogeneity x dropout x strategy x seed grid with mean +/- std and paired differences against FedAvg (95% intervals); `--shard` splits the work across machines |
-| `fedtune dashboard --runs runs` | Read-only dashboard on 127.0.0.1; refreshes only when you click Refresh |
-| `fedtune export --runs runs --out exports` | Exports metrics (CSV/JSON), resolved config, partition report and plots |
-| `--plugin examples/custom_strategy.py` | Registers a new aggregation strategy without changing core code |
-| `--cpu-deterministic` (run/resume/grid) | CPU with deterministic kernels for bitwise reproducibility |
+```
+Browser (React)
+  │
+  ├── AuthContext     → REST calls via axios (login, register, experiments)
+  ├── SocketContext   → Socket.io connection (one per session)
+  │
+  └── PhysicsCanvas
+        ├── Matter.js engine  → runs physics simulation
+        ├── canvas_action     → emits on every user interaction
+        └── Recharts          → plots KE, PE, velocity live
 
-## 6. Reproducing the final results
+        ↕  WebSocket
+
+Node.js Server
+  ├── Express REST API
+  │     /api/auth         → JWT register / login
+  │     /api/rooms        → create, join, lock, state persistence
+  │     /api/experiments  → save, publish, clone, submit, grade
+  │
+  └── Socket.io Manager
+        join_room       → sends current room state to new joiner
+        canvas_action   → rebroadcasts to all other users in room
+        chaos_event     → instructor-only, broadcasts to everyone
+        toggle_lock     → locks/unlocks room for students
+
+        ↕  Mongoose ODM
+
+MongoDB
+  ├── Users       → bcrypt passwords, RBAC roles
+  ├── Rooms       → physics state snapshots, participant list, TTL expiry
+  └── Experiments → versioned saves, submissions, grades
+```
+
+---
+
+## Running Locally
+
+### Option A — Docker (recommended)
+
+Make sure Docker Desktop is open and running first (look for the whale icon in your menu bar).
 
 ```bash
-# Tune all four strategies, freeze the settings, then run the 108-run grid
-fedtune tune -c configs/tune.yaml --grid
+# 1. Clone the repo
+# ⚠️  REPLACE with your actual GitHub repo URL below
+git clone https://github.com/YOUR_USERNAME/virtual-lab
+cd virtual-lab
 
-# Or in two steps, sharded over several machines:
-fedtune tune -c configs/tune.yaml                        # writes tunes/agnews/tuned.yaml
-fedtune grid -c tunes/agnews/tuned.yaml --shard 0/3      # then 1/3 and 2/3 on the other machines
+# 2. Set up environment variables
+cp backend/.env.example backend/.env
+# Open backend/.env in any text editor and set JWT_SECRET to any random string
+# Example: JWT_SECRET=myrandombsecretkey123456789
 
-# Look at the results
-fedtune dashboard --runs runs                            # open the "Grid & significance" tab
+# 3. Start everything
+docker-compose up --build
 ```
 
-Language skew (XNLI) uses `configs/xnli_language.yaml` in the same way.
-Each grid writes `grid_summary.csv` and `paired_vs_fedavg.csv` under `grids/<grid_id>/`.
+Once running:
+- Frontend → http://localhost:3001
+- Backend API → http://localhost:5001
+- Health check → http://localhost:5001/health
 
-## 7. Dashboard
+To stop: press `Ctrl+C` then run `docker-compose down`
 
-Four views: **Overview** (global validation accuracy per round, run table), **Clients & data**
-(per-client accuracy, participation matrix, label make-up per client), **Aggregation**
-(aggregation weights, cluster assignments, update similarity) and **Grid & significance**
-(mean +/- std heatmap and paired differences with 95% intervals). The dashboard only reads result
-files; it never changes a run. After new results are written, click **Refresh**.
+---
 
-## 8. Output layout
+### Option B — Manual (no Docker)
 
-```
-runs/<name>-<strategy>-a<alpha>-p<rate>-s<seed>-<hash8>/
-  config.resolved.yaml  partition_report.json  participation.npy  summary_log.jsonl
-  rounds.jsonl          checkpoints/ckpt_<r>.pt  run_summary.json
-grids/<grid_id>/grid_summary.csv, paired_vs_fedavg.csv, missing_cells.json
-tunes/<name>/tuning_results.csv, best_params.json, tuned.yaml
-exports/<run_id>/rounds.csv, rounds.json, plots.png
+You will need Node.js 18+ and MongoDB installed locally.
+
+**Terminal 1 — Start MongoDB**
+```bash
+mongod
 ```
 
-The 8-character run hash covers every setting that can change the numbers, so a changed
-configuration never reuses old results.
+**Terminal 2 — Start Backend**
+```bash
+cd backend
+cp .env.example .env
+npm install
+npm run dev
+```
 
-## 9. Data
+**Terminal 3 — Start Frontend**
+```bash
+cd frontend
+npm install
+npm start
+```
 
-AG News (127,600 texts), MultiNLI (412,349 sentence pairs, 10 genres) and XNLI (112,500 pairs,
-15 languages). Datasets are used unmodified. Only `data/ag_news/` is included in the bundle because
-the MNLI training file is very large; see `data/README.md` for the sources and for how to obtain MNLI
-and XNLI. Only the pretrained model is downloaded, once, on first use.
+Frontend opens at http://localhost:3000, backend runs at http://localhost:5000.
 
-## 10. Reproducibility
+---
 
-- **Bitwise reproducible (any device):** dataset subsample, partitions, validation/test/reference
-  splits and the client-availability schedule (seeded NumPy streams).
-- **Training on CUDA or MPS:** statistically reproducible, not bitwise. Compare results as
-  distributions over seeds, not as exact numbers.
-- **CPU with `--cpu-deterministic`:** bitwise on the same machine and library versions.
+### Testing It End to End
 
-## 11. Adding your own strategy
+1. Go to `http://localhost:3001`
+2. Register an **Instructor** account
+3. Open an incognito window and register a **Student** account
+4. Instructor: click **Create Room** and copy the 6-character code
+5. Student: paste the code into **Join a Room**
+6. Both users are now live in the same physics canvas
 
-Copy `examples/custom_strategy.py`, register your class with `@register`, and run with
-`--plugin path/to/your_strategy.py`. No core code needs to change.
+Try loading the **Pendulum** preset on the instructor side — the student should see it appear instantly. Then try **Flip Gravity** from the instructor's chaos panel.
 
-## 12. Notes and limitations
+---
 
-- Single-machine simulation of the federation, not a real network deployment.
-- Generative / instruction-tuning tasks are not implemented; the system handles classification of
-  single texts and text pairs.
-- No formal privacy guarantee is claimed: client summaries reveal coarse topical and label make-up by design.
-- With 3 seeds, paired 95% intervals are wide and only exclude zero for large effects.
+## Running Tests
+
+```bash
+cd backend
+npm test
+npm test -- --coverage
+```
+
+Tests cover the OT conflict resolution engine (unit tests) and auth routes (integration tests against an in-memory MongoDB instance).
+
+---
+
+## Project Structure
+
+```
+virtual-lab/
+├── .github/workflows/ci.yml      → GitHub Actions CI pipeline
+├── docker-compose.yml             → one-command full stack setup
+│
+├── backend/
+│   ├── src/
+│   │   ├── server.js              → Express + Socket.io entry point
+│   │   ├── config/db.js           → MongoDB connection
+│   │   ├── middleware/auth.js     → JWT protect + RBAC authorize
+│   │   ├── models/                → User, Room, Experiment schemas
+│   │   ├── controllers/           → business logic
+│   │   ├── routes/                → Express routers
+│   │   └── socket/
+│   │       ├── socketManager.js   → all real-time event handling
+│   │       └── otEngine.js        → conflict resolution engine
+│   └── Dockerfile
+│
+└── frontend/
+    ├── src/
+    │   ├── context/
+    │   │   ├── AuthContext.jsx    → global auth state + axios instance
+    │   │   └── SocketContext.jsx  → socket.io connection management
+    │   ├── components/
+    │   │   ├── Canvas/
+    │   │   │   └── PhysicsCanvas.jsx  → main lab workspace
+    │   │   ├── Auth/AuthPage.jsx
+    │   │   └── Library/ExperimentLibrary.jsx
+    │   └── pages/
+    │       ├── Dashboard.jsx
+    │       ├── RoomPage.jsx
+    │       └── MyExperiments.jsx
+    └── Dockerfile
+```
+
+---
+
+## What I Learned Building This
+
+**Real-time sync is harder than it looks.** The trickiest bug in this project was that the Socket.io client connected asynchronously, but the React component was reading `socketRef.current` (which was `null` at render time) instead of waiting for the connection. The fix was switching from a ref to actual React state for the socket instance, so components re-render when the connection is ready.
+
+**Physics engines are opinionated.** Matter.js runs on a fixed timestep and does not care about your React component lifecycle. Learning to separate the simulation loop from the render loop — and not letting them block each other — was a big part of getting smooth 60fps with live analytics at the same time.
+
+**Drag sync needs special handling.** Syncing discrete events like adding a body or loading a preset is straightforward. Syncing continuous mouse drag at 60fps is different — you cannot hit the database on every frame. Skipping the DB lookup for move events and just rebroadcasting them inline made drag feel instant.
+
+---
+
+## Known Limitations and Future Work
+
+- [ ] If two users drag the same body simultaneously, the last update wins — no full conflict resolution for drag events yet
+- [ ] Physics state is not perfectly deterministic across clients — floating point differences can cause tiny divergence over time
+- [ ] No mobile or touch support on the canvas yet
+- [ ] Would love to add a session replay system — record a full experiment and play it back later
+
+---
+
+## Screenshots
+
+> ⚠️  Add your screenshots here. Recommended: one of the login page, one of the canvas with bodies and vectors, one of the analytics panel.
+>
+> To add a screenshot in markdown:
+> ![Description of screenshot](./screenshots/your-image-name.png)
+>
+> Create a /screenshots folder in the root of the project and drop your images there.
+
+---
+
+*Built with Matter.js · Socket.io · React · Node.js · MongoDB*
